@@ -20,6 +20,7 @@ function getUser(id){
             setTimeout(()=>{
                 console.log('Reading a user from DB');
                 resolve({id: id, gitHubUsername: 'ddd'})
+                // reject(new Error('message'))
             },2000);
     })
 }
@@ -38,8 +39,13 @@ function getCommites(repository){
          // Kick off some async work 
          setTimeout(()=>{
             console.log('Reading commits from repositories')
-            res({repository, commits:'commits'})
+            res(['repo1', 'repo2'])
          },2000)
     });
 }
 // How to consume promises 
+getUser(1)
+    .then(user=>getRepositories(user.gitHubUsername))
+    .then(repos=>getCommites(repos[0]))
+    .then(commit=>console.log(commit))
+    .catch(err=> console.log('Error', err.message))
